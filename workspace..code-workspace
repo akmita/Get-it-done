@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "..\\.."
+		},
+		{
+			"name": "superBlink",
+			"path": "..\\..\\..\\..\\..\\..\\..\\Documents\\PlatformIO\\Projects\\superBlink"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}
