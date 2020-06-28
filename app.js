@@ -24,27 +24,48 @@ db.connect((err)=> {
 // --------------------Express Routes--------------------------------- //
 
 // PUT route - updates existing list item - Whatever goes after the '/' is the primary key of the document we want to update
+// app.put("/:id", (req, res)=>{
+//     const todoID = req.params.id;   // Gets the ID from the URL path entered
+//     const userInput = req.body;     // Get user input from the request body in JSON
+
+
+//                                                                 console.log("req.params.id: ", todoID);
+//                                                                 console.log("req.body: ", userInput);
+//                                                                 console.log("put request called in node JS");
+//     db.getDB().collection(collection).findOneAndUpdate( { _id : db.getPrimaryKey(todoID) },   // IDENTIFIES OLD DATA | Pass in object ID object instead of just the string "todoID"     
+//                                                         { $set : {todo : userInput.todo} },   // ADDS NEW DATA | After "$set:", Specifies what new data will be, in this case a JS object
+//                                                         { returnOriginal : false},            // Do not return original 
+//                                                         ( err, result)=>{                     // Callback 
+//                                                             if (err) { console.log(err); }    
+//                                                             else     {                        // Send json 
+//                                                                 console.log("Update successful");
+//                                                                 res.json(result); 
+//                                                             }    
+//                                                         }
+//                                                       )        
+// });
+
+// generic put route - this route will handle all database updates
 app.put("/:id", (req, res)=>{
-    const todoID = req.params.id;   // Gets the ID from the URL path entered
-    const userInput = req.body;     // Get user input from the request body in JSON
+    console.log("  generic PUT method called.. body: ");
+    console.log(req.body);
+    console.log("typeof req.body: " + typeof(req.body));
+    elementID = req.params.id;
 
 
-                                                                console.log("req.params.id: ", todoID);
-                                                                console.log("req.body: ", userInput);
-                                                                console.log("put request called in node JS");
-    db.getDB().collection(collection).findOneAndUpdate( { _id : db.getPrimaryKey(todoID) },   // IDENTIFIES OLD DATA | Pass in object ID object instead of just the string "todoID"     
-                                                        { $set : {todo : userInput.todo} },   // ADDS NEW DATA | After "$set:", Specifies what new data will be, in this case a JS object
-                                                        { returnOriginal : false},            // Do not return original 
-                                                        ( err, result)=>{                     // Callback 
-                                                            if (err) { console.log(err); }    
-                                                            else     {                        // Send json 
-                                                                console.log("Update successful");
-                                                                res.json(result); 
-                                                            }    
-                                                        }
-                                                      )        
-});
-
+    db.getDB().collection(collection).findOneAndUpdate(
+        { _id : db.getPrimaryKey(elementID)},
+        { $set : req.body },
+        { returnOriginal : false },
+        (err, result)=>{
+            if (err) { console.log(err); }
+            else {
+                console.log("update successful");
+                res.json(result);
+            }
+        }
+    )
+})
 
 // POST route - handles document insertion
 app.post('/', ( req, res)=> {
@@ -52,15 +73,16 @@ app.post('/', ( req, res)=> {
 
     console.log(userInput);
 
-    db.getDB().collection(collection).insertOne( userInput,         // document we want to insert
-                                                 (err, result)=>{   // Callback | Result is the result document from mongoDB
-                                                    if (err) { console.log(err); }
-                                                    else {
-                                                        res.json({ result : result, document : result.ops[0]});  // Ops contains the documents inserted with added _id fields
-                                                        console.log("Succesfully inserted following item into database: ");
-                                                        console.log(result.ops[0]);
-                                                    }
-                                                 }
+    db.getDB().collection(collection).insertOne( 
+        userInput,         // document we want to insert
+        (err, result)=>{   // Callback | Result is the result document from mongoDB
+            if (err) { console.log(err); }
+            else {
+                res.json({ result : result, document : result.ops[0]});  // Ops contains the documents inserted with added _id fields
+                console.log("Succesfully inserted following item into database: ");
+                console.log(result.ops[0]);
+            }
+        }
     )
 }); 
 

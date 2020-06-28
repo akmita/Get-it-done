@@ -30,6 +30,18 @@ CHANGELOG
         event listener on each icon to change icons clientside, then database
         maybe only bind one set of icons
         make sure two icon Tables can't be open at the same time
+        -- DONE ---
+
+        -- NEXT UP --
+        update icon clientside 
+        -- DONE -- 
        
+
+        -- NEXT UP --
+        use dropdown feature in HTML 
+        we can scrap the removedropdowns function
+             -- or --
+            completely ignore the small issue and update icon serverside using generic get route
+
 
    
