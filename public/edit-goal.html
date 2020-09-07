@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit goal</title>
+    <style>
+        body {
+            margin-top: 0px;
+        }
+        .nav {
+            display: flex;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            color: grey;
+            font-size: 18px;
+            
+        }
+        a {
+            padding-top: 1em;
+            padding-left: 1em;
+            flex-grow: 1;
+        }
+        #headerText {
+            flex-grow: 1;
+        }
+        .inputBlock {
+            display: flex;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            color: grey;
+            font-size: 14px;
+            padding-bottom: 1em;
+        }
+        .label {
+            flex-grow: 1;
+        }
+        .input {
+            flex-grow: 1;
+            height: 2em;
+            margin-top: .5em;
+            width: 70%;
+        }
+
+    </style>
+    <script src="https://kit.fontawesome.com/3c022a63df.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="nav"> <a><i class="fas fa-arrow-left"></i></a> <div id="headerText"><p>Edit Goal</p></div> </nav>
+    <div class="inputBlock"><p class="label">Goal</p><input class="input" id="goalInput" type="text"></div>
+    <div class="inputBlock"><p class="label">Reason</p><input class="input" id="reasonInput" type="text"></div>
+
+    <script src="goals.js" ></script>
+</body>
+
+</html>

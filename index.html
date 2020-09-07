@@ -3,10 +3,33 @@
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">   
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
+    <link rel="stylesheet" type="text/css" href="/nav-main.css">
+    <link rel="stylesheet" type="text/css" href="/global-style.css">
+    <style>       
+        /* input field */
+        .searchContainer {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            display: grid;
+            grid-template-columns: 0fr 10fr 3fr;
+            width: 65%;
+            margin: auto;          
+        }
+
+        /* list items */
+        .listItem { display: flex; }
+
+        .iconBox        { flex-shrink: 1;   width: 5em; }
+        .editIconBox    { flex-shrink: 1;   width: 1.5em; }
+        .todoBox        { flex-grow: 4; }           
+        .editBox        { flex-grow: 4;   visibility: hidden; }
+        .editBtnBox     { flex-shrink: 1; }
+        .delBtnBox      { flex-shrink: 1; }
+
+        /* icon table stuff */
         .iconSelectContainer 
         {
             display: grid;
@@ -17,11 +40,10 @@
             width: 151px;
             position: absolute;
             z-index: 1;
-            padding: 5px;
-            
+            padding: 5px;            
             /* visibility hidden by default in script */
         }
-        
+
         .icon {
             padding: 5px;
             text-align: center;
@@ -30,9 +52,9 @@
         .icon:hover 
         {
             background-color: rgb(104, 67, 139);
-        }
+        }      
 
-        
+
     </style>
     <!-- Favicons -->
     <!-- <link href="assets/css/all.css" rel="stylesheet">   OFFLINE USE  -->
@@ -41,19 +63,21 @@
   </head>
   <body>
       <div class="container">
-        <div class="row">
-            <div class="col-lg-2"> </div>
-            <div class="col-lg-8">
-                <form id="form">
-                    <div class="form-group">
-                        <label for="todo">Todo</label>
-                        <input type="text" class="form-control" id="todoUserInput" placeholder="Todo">
-                        <button type="submit" class="btn btn-primary">Create</button>
-                    </div>
-                </form>
+        <nav class="navBar">
+            <a href="" class="nav">         <i class="far fa-calendar"></i>                 &nbsp;  Availability    </a>
+            <a href="goals" class="nav">    <i class="fas fa-clipboard-list navIcon"></i>   &nbsp;  Goals           </a>
+            <a href="" class="nav">         <i class="far fa-check-square navIcon"></i>     &nbsp;  Get it done     </a>
+            <a href="" class="nav">         <i class="fas fa-chart-bar navIcon"></i>        &nbsp;  Stats           </a>
+        </nav>
+        
+        <form id="form">
+            <div class="form-group searchContainer">
+                <label for="todo"></label>
+                <input type="text" class="form-control" id="todoUserInput" placeholder="Enter goal">
+                <button type="submit" class="btn btn-primary">Create</button>
             </div>
-            <div class="col-lg-2"> </div>
-        </div>
+        </form>
+        
         
         <div class="row">
             <div id="left-wrapper" class="col-lg-2"> </div>
@@ -81,7 +105,7 @@
             const numIcons = 19;
             const icons = [ "fa-calculator", "fa-atom", "fa-dna", "fa-biking", "fa-book", "fa-briefcase", "fa-car-side", "fa-crosshairs", "fa-dice-five", 
                             "fa-fighter-jet", "fa-futbol", "fa-gamepad", "fa-pen", "fa-square", "fa-dumbbell", "fa-compass", "fa-thumbtack", "fa-hiking", "fa-camera" ];
-            // add computer icon, maybe more sports related icons
+            // add computer icon, maybe more sports related icons, maybe instrument icons, notes,
 
             // resets todos
             const resetTodosInput = ()=>{
@@ -111,12 +135,20 @@
                 }
             }
 
-
             // adds icontable to html, loads up its event listeners
-            function initIconTable(ids) {
-                document.querySelector("#left-wrapper").innerHTML = getIconTable();
-                for (var iconNum = 0; iconNum < numIcons; iconNum++) {
-                    setIcon(iconNum, ids);     
+            function initIconTable(ids) {       
+                removeDropdowns();                  // gets rid of menus before creating icon menu
+
+                console.log(" in initIconTable: ");
+                console.log(document.getElementById(ids.todoID).classList);
+                if (document.getElementById(ids.todoID).classList.contains(".dropdown")) {   // if already there, remove it instead
+                    console.log("    NOPE not creating a new one");
+                }
+                else {                                                                       // if not there, create icon table 
+                    document.querySelector("#" + ids.todoID).innerHTML += getIconTable();
+                    for (var iconNum = 0; iconNum < numIcons; iconNum++) {    // loops through each icon
+                        setIcon(iconNum, ids);                                // calls listeners on each icon                              
+                    }
                 }
             }
 
@@ -125,7 +157,7 @@
             function getIconTable() {
                 var iconTableHTML = `<div class="iconSelectContainer dropdown">`;              
                 for (var i = 0; i < numIcons; i++) {
-                    iconTableHTML += `<i id="i${i}"" class="icon fas ${icons[i]}"></i>`;
+                    iconTableHTML += `<i id="i${i}" class="icon fas ${icons[i]} dropBtn"></i>`;
                 }
                 iconTableHTML += `</div>`;
 
@@ -139,15 +171,14 @@
                 console.log("setIcon(): setting event listener for icon: " + iconNum + " with todo: " + ids.listItemID);
                 const iconBtn = $(`#i${iconNum}`);
 
-
-                    // FIXME
+                // FIXME
                 // document.querySelector(`#i${iconNum}`).addEventListener("click", ()=>{      ** no luck
                 iconBtn.click(()=> {
 
                     console.log("setting icon #" + iconNum + " in element with id: " + ids.listItemID);    
                     var element = document.getElementById(ids.iconID);
                     var _id = ids.todoID.substr(5);
-                    element.innerHTML = `<i id="${ids.iconID}" class="iconContainer fas ${icons[iconNum]} fa-3x">`;  
+                    element.innerHTML = `<i id="${ids.iconID}" class="iconContainer fas ${icons[iconNum]} fa-3x dropBtn">`;  
                     removeDropdowns();
                     
                     // request to update the icon in database
@@ -213,30 +244,27 @@
                     deleteID : "delete_" + todo._id,
                     listItemID : "listItem_" + todo._id,
                     editBoxID : "editBox" + todo._id,       // added for edit box ID
+                    editIconID : "editIcon" + todo._id,       
                     todoID : "todo_" + todo._id,
                     iconID : "icon_" + todo._id,
                     iconTableID : "iconTable_" + todo._id   // might be okay to remove since not used anymore
                 }
             }
-            
-            
+                       
             // 
             // Returns HTML list element
             //                                                                                                                             
             const buildTemplate = (element, ids, iconNum)=>{   
                 console.log("icon: " + icons[iconNum]);        
             
-                return `<li class="list-group-item" id="${ids.listItemID}">
-                    <div class="row"> 
-                        <div class ="col-6 col-md-2" id="${ids.iconID}"><i class="iconContainer fas ${icons[iconNum]} fa-3x"></i></div>
-                        <div class="col-6 col-md-6" id="${ids.todoID}">${element.todo}</div>
-                        
-                        <div class="col-6 col-md-4 float-right text-right" >                  
-                            <button type="button" class="btn btn-secondary" id="${ids.editID}">Edit</button> 
-                            <button type="button" class="btn btn-danger" id="${ids.deleteID}">Delete</button>              
-                            <input type="text" id="${ids.editBoxID}" placeholder="update existing data">
-                        </div>
-                    </div>
+                return `<li class="list-group-item listItem" id="${ids.listItemID}">
+                   
+                    <div class="iconBox" id="${ids.iconID}"><i class="iconContainer fas ${icons[iconNum]} fa-3x dropBtn"></i></div>
+                    <div class="editIconBox" id="${ids.editIconID}"><i class="fas fa-edit"></i></div> 
+                    <div class="todoBox" id="${ids.todoID}">${element.todo}</div>
+                    <input class="editBox" type="text" id="${ids.editBoxID}" placeholder="update existing data">
+                    <button type="button" class="btn btn-secondary editBtnBox" id="${ids.editID}">Edit</button> 
+                    <button type="button" class="btn btn-danger delBtnBox" id="${ids.deleteID}">Delete</button>                  
                 </li>`;
             }
 
@@ -252,14 +280,37 @@
                     display.append(buildTemplate(todo, ids, iconNum));  // Append each of the list items to unordered list                   
                                        
                     editIcon(ids);                       
-
+                    initEdit(ids);
                     editTodo(todo, ids.todoID, ids.editID, ids.editBoxID);
                     deleteTodo(todo, ids.listItemID, ids.deleteID);
                     // for some reason, this needs to be here, otherwise elements in the database before the start of the program cannot be deleted 
                 })
             }
 
- 
+            // initializes editing of current item
+            const initEdit = (ids)=> {
+                // initialize event listeners for edit icon
+                document.getElementById(ids.editIconID).addEventListener("click", ()=>{
+                    if (document.getElementById(ids.editBoxID).style.visibility === "visible") {
+                        console.log("ending edit");
+                        document.getElementById(ids.editBoxID).style.visibility = "hidden";
+                        document.getElementById(ids.todoID).style.display = "block"; 
+                    }
+                    else {
+                        console.log("starting edit");
+                        document.getElementById(ids.editBoxID).style.visibility = "visible";
+                        document.getElementById(ids.todoID).style.display = "none";
+                    }
+                })
+
+                // don't like jquery
+                // $(`#${ids.editIconID}`).click(()=> {
+                //     console.log("clicked");
+                //     console.log(ids.editID);
+                // });
+                // each icon is bound to an editBox, which will be made visible once clicked
+            }
+
             //
             // Edits crrent to-do list element 
             //
@@ -310,7 +361,7 @@
                     headers : {                                            // Specifies the content type
                         'Content-Type' : 'application/json'
                     },    
-                    body : JSON.stringify({ todo : todoUserInput.val() }) // Get contents of input field, turn into JSON string                                 
+                    body : JSON.stringify({ todo : todoUserInput.val(), iconNum: 13 })    // Get contents of input field, turn into JSON string                                 
                 }).then((response)=>{                  
                     return response.json();                                // Promise that parses the data
                 }).then((data)=>{                                          // Gets data from the promise
@@ -321,6 +372,7 @@
                         editTodo(data.document, ids.todoID, ids.editID, ids.editBoxID);     // Attach click events to edit button
                         deleteTodo(data.document, ids.listItemID, ids.deleteID);
                         editIcon(ids);                                                      // display or hide icon table for edititng icon
+                        initEdit(ids);
                     }
                     resetTodosInput();
                 })
@@ -336,7 +388,16 @@
 
             // ----------------------------------------
             // global event listeners
-            
+
+            // removes all dropdown menus when anywhere on the sindow is clicked (except the button that initiated them)
+            window.onclick = function(event) {
+                if (!event.target.matches(".dropBtn")) {
+                    console.log("something other than dropdown button clicked");
+                    console.log(event.target);
+                    removeDropdowns();
+                }    
+            }
+
             // end global event listeners
             // ----------------------------------------
 

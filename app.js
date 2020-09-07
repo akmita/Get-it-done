@@ -4,7 +4,8 @@ const app = express();
 app.use(bodyParser.json());
 const path = require('path');
 const db = require("./db");
-const collection = "todo";    // Holds all todos
+const port = process.env.PORT || 3000;
+
 
 // MONGODB DATABASE CONNECTION
 db.connect((err)=> {
@@ -13,13 +14,13 @@ db.connect((err)=> {
         process.exit(1);
     }
     else {
-        app.listen(3000, ()=>{
-            console.log("connected to database, app listening on port 3000");
+        app.listen(port, ()=>{
+            console.log("connected to database, app listening on port " + port);
         });
     }
 });
 
-
+app.use(express.static('public')); // for css files
 
 // --------------------Express Routes--------------------------------- //
 
@@ -27,8 +28,6 @@ db.connect((err)=> {
 // app.put("/:id", (req, res)=>{
 //     const todoID = req.params.id;   // Gets the ID from the URL path entered
 //     const userInput = req.body;     // Get user input from the request body in JSON
-
-
 //                                                                 console.log("req.params.id: ", todoID);
 //                                                                 console.log("req.body: ", userInput);
 //                                                                 console.log("put request called in node JS");
@@ -45,15 +44,34 @@ db.connect((err)=> {
 //                                                       )        
 // });
 
-// generic put route - this route will handle all database updates
-app.put("/:id", (req, res)=>{
-    console.log("  generic PUT method called.. body: ");
-    console.log(req.body);
-    console.log("typeof req.body: " + typeof(req.body));
+// generic put route - this route will handle all database updates -- DEPRECATED
+// app.put("/:id", (req, res)=>{
+//     console.log("  generic PUT method called.. body: ");
+//     console.log(req.body);
+//     elementID = req.params.id;
+
+//     db.getDB().collection("todo").findOneAndUpdate(
+//         { _id : db.getPrimaryKey(elementID)},
+//         { $set : req.body },
+//         { returnOriginal : false },
+//         (err, result)=>{
+//             if (err) { console.log(err); }
+//             else {
+//                 console.log("update successful");
+//                 res.json(result);
+//             }
+//         }
+//     )
+// })
+
+// put route will handle database updates
+app.put("/api/:id", (req, res)=>{
+    console.log("API PUT method called... id: " + req.params.id);
+    console.log("body: ");
+    console.log(req.body);    
     elementID = req.params.id;
 
-
-    db.getDB().collection(collection).findOneAndUpdate(
+    db.getDB().collection("goals").findOneAndUpdate(
         { _id : db.getPrimaryKey(elementID)},
         { $set : req.body },
         { returnOriginal : false },
@@ -67,13 +85,14 @@ app.put("/:id", (req, res)=>{
     )
 })
 
+
 // POST route - handles document insertion
 app.post('/', ( req, res)=> {
     const userInput = req.body;  
 
     console.log(userInput);
 
-    db.getDB().collection(collection).insertOne( 
+    db.getDB().collection("todo").insertOne( 
         userInput,         // document we want to insert
         (err, result)=>{   // Callback | Result is the result document from mongoDB
             if (err) { console.log(err); }
@@ -91,30 +110,44 @@ app.post('/', ( req, res)=> {
 app.delete('/:id', (req,res)=>{
     const todoID = req.params.id;
 
-    db.getDB().collection(collection).findOneAndDelete( {_id : db.getPrimaryKey(todoID)}, (err, result)=>{
+    db.getDB().collection("todo").findOneAndDelete( {_id : db.getPrimaryKey(todoID)}, (err, result)=>{
         if (err) { console.log(err); }
         else     { res.json(result); } 
     });
 })
 
 
-// GET route 1 - sends static html file to user
+// GET route 1 - main page?
 app.get('/', (req, res)=> {
     res.sendFile(path.join(__dirname, 'index.html'));
 })
 
+// GET menu option 2 - goals page
+app.get('/goals', (req, res)=> {
+    res.sendFile(path.join(__dirname, 'goals.html'));
+})
+
 // GET route 2 - query the database for all todos
 app.get('/getTodos', (req, res)=>{
-    db.getDB().collection(collection).find({}).toArray((err, documents)=>{
+    db.getDB().collection("todo").find({}).toArray((err, documents)=>{
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.json(documents);           
+        }
+    })        
+});
+
+// gets goals from database
+app.get("/getGoals", (req, res)=> {
+    console.log("called get goals");
+    db.getDB().collection("goals").find({}).toArray((err, documents)=>{
         if (err) {
             console.log(err);
         }
         else {
             res.json(documents);
-            
         }
-    })        
-});
-
-
-
+    })
+})

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="main">
+
+    </div>
+    
+</body>
+<script>
+    function getTemplate(id) {
+        return `<div onclick="handleClick(event, ${id})" style="background: red;" >click me</div>`;
+    }
+
+    function getGoalParent(name, duration, reason, ids, numMilestones, color) {
+        var boldStyle = "font-weight: 800; font-size: 10px; padding-top: 3px; opacity: 1;";
+        var style = Array(4).fill("");
+
+
+
+        console.log(reason);
+        // toggleEditing(${ids.goalID}, ${ids.containerID}, ${ids.nameID}, 5, event)
+
+
+        return `<div class="goalParentContainer">
+            <div class="goal-1" id="">
+                <p class="dropDownIcon"><i class="fas fa-caret-down"></i></p>
+                <div class="goalText">hello</div>
+                <div class="duration">
+            </div>
+                <div class="editIcon" onclick="testEdit(event, ${reason})" >click here<i class="fas fa-edit"></i></div>
+            </div>
+        </div>`
+    }
+
+    
+
+
+    document.getElementById("main").innerHTML += getGoalParent("A", "monthly", "because", "12345", 5, "blue");
+
+    
+    function testEdit (event, reason) {
+        console.log("testEdit ran!!!");
+        console.log(reason);
+    }
+
+    function handleClick(event, id) {
+        console.log("hello! "  + id);
+        console.log(event);
+    }
+
+    
+    
+
+
+</script>
+</html>

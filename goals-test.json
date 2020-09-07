@@ -1,0 +1,332 @@
+
+{
+    "name": "learn 3 songs on guitar",
+    "startDate": "07/24/2020",
+    "type": "one-time",           
+    "duration": "yearly",
+    "milestones": ["Learn intro to song 1", "learn bridge and chorus of song 1"],           
+    "weekly-tasks": 
+    [   
+        [
+            { 
+                "name": "scales",     
+                "reason": "develop fretboard knowledge",
+                "date": "07-30-2020"   
+            }, 
+            { 
+                
+                "name": "improvisation", 
+                "reason": "develop songwriting and phrasing",
+                "date": "07-30-2020"   
+            }, 
+
+            { 
+                "name": "ear training", 
+                "reason": "write better melodies",
+                "date": "07-30-2020"   
+            }
+        ],
+        [
+            { 
+                "name": "scales", 
+                "reason": "develop fretboard knowledge",
+                "date": "08-06-2020"   
+            }, 
+            { 
+                "name": "improvisation", 
+                "reason": "develop songwriting and phrasing",
+                "date": "08-06-2020"   
+            }, 
+            { 
+                "name": "ear training", 
+                "reason": "write better melodies",
+                "date": "08-06-2020"   
+            },
+            { 
+                "name": "practice over backing tracks", 
+                "reason": "develop better intuition for making music",
+                "date": "08-06-2020"   
+            } 
+        
+        ],
+        [
+            { 
+                "name": "scales", 
+                "reason": "develop fretboard knowledge",
+                "date": "08-13-2020"   
+            }, 
+            { 
+                "name": "ear training", 
+                "reason": "write better melodies",
+                "date": "08-13-2020"   
+            },
+            { 
+                "name": "figure out what to practice", 
+                "reason": "progress toward new goal, stay on track with what you want to do!",
+                "date": "08-13-2020"   
+            }
+        ]
+    ],                 
+    "completed": false,
+    "past": true
+}
+
+{
+    "name": "join a band",
+    "startDate": "07/24/2020",
+    "type": "one-time",           
+    "duration": "yearly",
+    "milestones": ["Learn intro to song 1", "learn bridge and chorus of song 1"],           
+    "weekly-tasks": 
+    [   
+        [
+            { 
+                "name": "download",     
+                "reason": "develop fretboard knowledge",
+                "date": "07-30-2020"   
+            }, 
+            { 
+                
+                "name": "blah", 
+                "reason": "develop songwriting and phrasing",
+                "date": "07-30-2020"   
+            }, 
+
+            { 
+                "name": "cookies", 
+                "reason": "write better melodies",
+                "date": "07-30-2020"   
+            }
+        ],
+        [
+            { 
+                "name": "acid", 
+                "reason": "develop fretboard knowledge",
+                "date": "08-06-2020"   
+            }, 
+            { 
+                "name": "beep", 
+                "reason": "develop songwriting and phrasing",
+                "date": "08-06-2020"   
+            }, 
+            { 
+                "name": "boop", 
+                "reason": "write better melodies",
+                "date": "08-06-2020"   
+            },
+            { 
+                "name": "foo", 
+                "reason": "develop better intuition for making music",
+                "date": "08-06-2020"   
+            } 
+        
+        ],
+        [
+            { 
+                "name": "foo", 
+                "reason": "develop fretboard knowledge",
+                "date": "08-13-2020"   
+            }, 
+            { 
+                "name": "foo foo", 
+                "reason": "write better melodies",
+                "date": "08-13-2020"   
+            },
+            { 
+                "name": "foo foo", 
+                "reason": "progress toward new goal, stay on track with what you want to do!",
+                "date": "08-13-2020"   
+            }
+        ]
+    ],                 
+    "completed": false,
+    "past": true
+}
+
+{
+    "name": "learn basics of MERN stack",
+    "startDate": "07/24/2020",
+    "type": "one-time",           
+    "duration": "monthly",
+    "milestones": ["understand how React interacts with Node.js", "understand Express routes", "understand how Node interacts with MongoDB", "be able to set up your own extremely simple MERN app from scratch"],         
+    "weekly-tasks": 
+    [
+        [
+            {   
+                "name": "watch video course! pause a couple times to figure out how to do it before you see him do it!", 
+                "reason": "engage mind to think about concepts instead of letting them fade away",
+                "date": "07-30-2020"
+            }, 
+            { 
+                "name": "make a dummy app to try to replicate results", 
+                "reason": "solidify concepts in your mind",
+                "date": "07-30-2020" 
+            },
+        ],
+        [
+            { 
+                "name": "watch video course! pause a couple times to figure out how to do it before you see him do it!", 
+                "reason": "engage mind to think about concepts instead of letting them fade away",
+                "date": "08-06-2020" 
+            }, 
+            { 
+                "name": "make a dummy app to try to replicate results", 
+                "reason": "solidify concepts in your mind",
+                "date": "08-06-2020"  
+            },
+            { 
+                "name": "look at react/ node apps online", 
+                "reason": "learn best practices and different solutions to problems",
+                "date": "08-06-2020"  
+            } 
+        ],
+        [
+            { 
+                "name": "watch video course! pause a couple times to figure out how to do it before you see him do it!", 
+                "reason": "engage mind to think about concepts instead of letting them fade away",
+                "date": "08-13-2020"  
+            }, 
+            { 
+                "name": "make a dummy app to try to replicate results", 
+                "reason": "solidify concepts in your mind",
+                "date": "08-13-2020"   
+            },
+            { 
+                "name": "look at react/ node apps online", 
+                "reason": "learn best practices and different solutions to problems",
+                "date": "08-13-2020"   
+            },
+            { 
+                "name": "rewrite node.js components of your app to better suit best practices", 
+                "reason":"have a better looking app on portfolio",
+                "date": "08-13-2020"  
+            } 
+        ]
+    ]  
+    "completed": false,
+    "past": true
+}
+
+
+
+///
+{
+    "name": "join a band",
+    "startDate": "07/30/2020",
+    "type": "one-time",
+    "duration": "yearly",
+    "milestones": [
+        {
+            "id": "190",
+            "name": "Learn 1 song with metronome",
+            "startDate": "07/30/2020"
+        },
+        {
+            "id": "175",
+            "name": "",
+            "startDate": "08/27/2020"
+        }
+    ],
+    "weekly-tasks": [    
+        {
+            "name": "download",
+            "reason": "develop fretboard knowledge",
+            "date": "07-30-2020"
+        }, 
+        {
+            "name": "blah",
+            "reason": "develop songwriting and phrasing",
+            "date": "07-30-2020"
+        },
+        {
+            "name": "cookies",
+            "reason": "write better melodies",
+            "date": "07-30-2020"
+        }       
+    ],
+    "completed": false,
+    "past": true
+}
+
+{
+    "name": "finish react mobile app",
+    "startDate": "08/3/2020",
+    "type": "one-time",
+    "duration": "monthly",
+    "milestones": [
+        {
+            "id": "15",
+            "name": "set up all needed buttons",
+            "startDate": "08/3/2020"
+        },
+        {
+            "id": "16",
+            "name": "create bar graph of spending",
+            "startDate": "08/10/2020"
+        }
+    ],
+    "weekly-tasks": [    
+        {
+            "id": "17",
+            "name": "watch react videos",
+            "reason": "learn best practices and trick",
+            "date": "08/3/2020"
+        },
+        {
+            "id": "18",
+            "name": "read documentation",
+            "reason": "practice doing the painful tasks",
+            "date": "08/3/2020"
+        },
+        {
+            "id": "19",
+            "name": "get familiar, understand the code",
+            "reason": "to know what you're doing",
+            "date": "08/3/2020"
+        },
+        {
+            "id": "20",
+            "name": "look at previous react examples",
+            "reason": "learn tricks you may have forgotten",
+            "date": "08/3/2020"
+        }          
+    ],
+    "completed": false,
+    "past": false
+}
+
+
+{
+    "name": "plan for trip",
+    "startDate": "08/3/2020",
+    "type": "one-time",
+    "duration": "weekly",
+    "weekly-tasks": [    
+        {
+            "id": "21",
+            "name": "find cool places in california",
+            "reason": "",
+            "date": "08/3/2020"
+        },
+        {
+            "id": "22",
+            "name": "find cool places on the way",
+            "reason": "",
+            "date": "08/3/2020"
+        },
+        {
+            "id": "23",
+            "name": "budget out trip",
+            "reason": "",
+            "date": "08/3/2020"
+        },
+        {
+            "id": "24",
+            "name": "get all stuff ready",
+            "reason": "",
+            "date": "08/3/2020"
+        }          
+    ],
+    "completed": false,
+    "past": false
+}

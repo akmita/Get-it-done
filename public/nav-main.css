@@ -1,0 +1,47 @@
+/* main nav bar styling */
+
+@media screen and (min-width: 780px) {
+    .navBar {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        width: 65%;
+        margin: auto;
+    }
+    .nav {
+        text-align: center;
+        border: dotted lightgrey 1px;
+        display: block;
+        color: grey;
+        font-family: impact;
+        font-size: 20px;
+        padding: 10px;
+    }
+    .nav:hover {
+        background-color: rgb(224, 229, 253);
+        cursor: pointer;
+    }
+}
+
+/* mobile */
+@media screen and (max-width: 780px) {
+    .navBar {
+        display: flex;
+        align-self: center;
+        justify-self: center;       
+        margin: auto;
+    }
+    .nav {
+        display: inline-block;
+        color: grey;
+        font-family: impact;
+        font-size: 14px;
+        padding: 6px 0px 6px;
+
+        grid-gap: 0px;
+        flex-grow: 1;
+    }
+    .nav:hover {
+        background-color: rgb(224, 229, 253);
+        cursor: pointer;
+    }
+}
