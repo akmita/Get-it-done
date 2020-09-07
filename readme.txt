@@ -3,7 +3,7 @@ APP TESTED ON NODE v10.16.0
 ----------------------------
 
 
-This is an app I made with the help of a youtube tutorial.
+This is my first Node JS App
 Uses promises inside the HTML file to update data clientside
 Uses routes in the app.js file to update the database
 
