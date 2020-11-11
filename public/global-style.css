@@ -2,6 +2,7 @@
 body {
     border: 0px;
     margin: 0px;
+    position: relative;     
 }
 
 
@@ -11,4 +12,12 @@ a:hover {
 }
 a {
     text-decoration: none;
+}
+
+
+/* nav bar should hover on the bottom, easy asses for using the app with one hand */
+.navBar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }

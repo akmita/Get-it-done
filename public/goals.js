@@ -11,7 +11,7 @@ function validateGoal(goal) {
     var requiredProp = ["name", "startDate", "type", "duration", "completed", "past"];
     for (var i = 0; i < requiredProp.length; i++) {
         if (!goal.hasOwnProperty(requiredProp[i]))  {
-            console.error("goal validation failed at prop: " + requiredProp[i]);
+            console.error("goal validation failed at propery: " + requiredProp[i]);
             return false;
         }
     }
@@ -28,6 +28,45 @@ function getIDs(id) {
         editID: `edit_${id}`
     }
 }
+
+// starts process for adding new goal
+function addNewGoal() {
+    console.log("starting process for adding new goal");
+    // set up the same elemnet used for editing    
+
+    if (document.querySelector(".elementForEdit") == null) {                            // if editing is NOT in progress, toggle editing
+        var editElement = $.parseHTML(getParentEditTemplate("", "", "purple"));
+        editElement[0].childNodes[3].placeholder = "goal name";                         // sets goal placeholder text
+        editElement[0].childNodes[5].placeholder = "just give me a reason";             // sets reason placeholder text
+        editElement[0].childNodes[7].addEventListener("click", ()=>{                    // when submit button is clicked
+            fetch("/api/addGoal", {
+                    headers: {
+                        "Content-Type": "Application/json"
+                    },               
+                    method: "POST",
+                    body: JSON.stringify({
+                        color: "grey",
+                        name: editElement[0].childNodes[3].value,
+                        reason: editElement[0].childNodes[5].value,
+                        
+                    })
+            }).then((res) => res.json())
+            .then((data) => {
+                    if (data.ok) console.log("successfully added goal");
+                    else { console.log("error adding goal"); }
+            });
+            $(".elementForEdit").remove();              
+        })
+        editElement[0].childNodes[9].addEventListener("click", ()=>{
+            $(".elementForEdit").remove();   
+        })        
+    $(".goalsContainer").append(editElement);
+    }
+    else { 
+        console.log("Editing in progress already"); 
+    }
+}
+
 
 // toggles dropdown of children of a larger goal
 function toggleChildren(containerID, numTasks) {       
@@ -60,16 +99,21 @@ function toggleChildren(containerID, numTasks) {
     }                        
 }
 
-function toggleEditing(event, ids, name, reason /*, icon id number, duration, numMilestones, color */ ) {
-    console.log("starting edit of goal: " + name);      
+// starts editing process
+function toggleEditing(event, ids, name, reason, goalObj /*, icon id number, duration, numMilestones, color */ ) {
+    console.log("starting edit of goal: " + name);        
     var name = document.getElementById(ids.nameID).innerHTML;
+    var nameField = document.getElementById(ids.nameID);
     var goal = document.getElementById(ids.goalID);
-    
+    var editElement;            // current element we're inputting data into to edit
+    console.table(goalObj);
+
     event.stopPropagation();                                                            // prevents dropdown from toggling
        console.log(document.querySelector(".elementForEdit"));                          
-    if (document.querySelector(".elementForEdit") == null) {                            // if editing is NOT in progress, toggle editing         
-        $(getElementForEdit(name, reason ,"red")).insertAfter(`#${ids.goalID}`);        // append editing element
-        goal.remove();
+    if (document.querySelector(".elementForEdit") == null) {                            // if editing is NOT in progress, toggle editing
+        editElement = $(getParentEditTemplate(name, reason ,"red"));          
+        editElement.insertAfter(`#${ids.goalID}`);                                      // append editing element
+        goal.style.display = "none";
     }
     else { console.log("Editing in progress already"); }
     
@@ -100,23 +144,17 @@ function toggleEditing(event, ids, name, reason /*, icon id number, duration, nu
         }).then((data)=> {
             console.log(data);
         });
+        // now we've updated the Todo in database
 
-        // if response is successful
-            // reload the goal
-                // how do we do this? 
-                // "after" method requires an html node to be a variable in JS
-                // set dummy variable 
-                // render the element exactly the same way as it is on reload
-                    // need extra variables passed into here 
-
-        // remove element 
-        // reset currElementForEdit.iconNum back to -1
-        // visibilize goal
+        // took the easy way, reload whole screen when we update.. it's easier. will need to consider perfomance issues later  TODO
+        document.querySelector(".goalsContainer").innerHTML = "";
+        getGoals();
     }) 
-    document.getElementById("cancelButton").addEventListener("click", ()=> {            // set listener for cancel icon   
-        // remove element 
-        // visibilize goal
+    document.getElementById("cancelButton").addEventListener("click", ()=> {            // set listener for cancel icon          
+        document.querySelector(".elementForEdit").remove();         // remove editing element
+        goal.style.display = "grid";                                // visibilize element
     }) 
+    
 }
 
 
@@ -249,7 +287,7 @@ function getDailyGoal(task, ids, color) {
     </div>`;
 }
 
-function getElementForEdit(name, reason, color) {
+function getParentEditTemplate(name, reason, color) {
     return `<div class="goal-1 elementForEdit" style="background:${color};">
             <div class="iconContainer"> <i class="fas fa-adjust"></i> </div>               
             <input type="text" class="goalTextBox" value="${name}" style="background: LightCoral;" id="001">
@@ -264,7 +302,29 @@ function getElementForEdit(name, reason, color) {
 }
 
 
+const renderGoal = (goal, ids) => {
+   
+    document.querySelector(".goalsContainer").innerHTML += getGoalParent(goal.name, goal.duration, goal.reason, goal.iconNum, ids, goal.milestones.length, goal.color);        // render main goal tab
+                    
+    setTimeout(()=>{
+        document.getElementById(ids.editID).addEventListener("click", (e)=>{
+            toggleEditing(e, ids, goal.name, goal.reason, goal);
+        })                        
+    }, 0);
 
+    goal.milestones.forEach((milestone)=>{                                                                          // loop through milestones
+        let milestone_ids = getIDs(milestone.id);                                                                   // ids for milestones       
+        console.log("Rendering milestone: " + milestone.name);         
+        console.log(goal.weeklyTasks);                           
+        document.getElementById(ids.containerID).innerHTML += getGoalChild_1(milestone.name, milestone_ids, goal.weeklyTasks.length, goal.color);    // render milestone                                                                   
+        
+        goal.weeklyTasks.forEach((task)=>{                                                                          // loop through daily goals
+            console.log("Rendering task: " + task.name);
+            let task_ids = getIDs(task.id);                                                                         // get ids for daily tasks
+            document.getElementById(milestone_ids.containerID).innerHTML += getDailyGoal(task, task_ids, goal.color);    // render each daily task
+        })                                   
+    }); 
+}
 
 const matchGoalType = (data) => {
 
@@ -278,33 +338,14 @@ const matchGoalType = (data) => {
                 case "yearly":                       
                 case "monthly":
                     let ids = getIDs(goal._id);                             // ids for goals 
-                    let color = goal.color;
 
                     // --- don't need this here! -- //
                     var today = new Date();                                 // get today's date
                     var startDate = today.getMonth() + "-" + today.getDay() + "-" + today.getFullYear();
                     // ---------------------------- //                                
+ 
+                    renderGoal(goal, ids);                           // changed this function 
 
-                    document.querySelector(".goalsContainer").innerHTML += getGoalParent(goal.name, goal.duration, goal.reason, goal.iconNum, ids, goal.milestones.length, color);        // render main goal tab
-                    
-                    setTimeout(()=>{
-                        document.getElementById(ids.editID).addEventListener("click", (e)=>{
-                            toggleEditing(e, ids, goal.name, goal.reason);
-                        })                        
-                    }, 0);
-
-                    goal.milestones.forEach((milestone)=>{                                                                          // loop through milestones
-                        let milestone_ids = getIDs(milestone.id);                                                                   // ids for milestones       
-                        console.log("Rendering milestone: " + milestone.name);         
-                        console.log(goal.weeklyTasks);                           
-                        document.getElementById(ids.containerID).innerHTML += getGoalChild_1(milestone.name, milestone_ids, goal.weeklyTasks.length, color);    // render milestone                                                                   
-                        
-                        goal.weeklyTasks.forEach((task)=>{                                                                          // loop through daily goals
-                            console.log("Rendering task: " + task.name);
-                            let task_ids = getIDs(task.id);                                                                         // get ids for daily tasks
-                            document.getElementById(milestone_ids.containerID).innerHTML += getDailyGoal(task, task_ids, color);    // render each daily task
-                        })                                   
-                    });  
                     break;
                 case "weekly":
                     // feature not yet implemented

@@ -1,0 +1,6 @@
+icon dissapears if user doesn't change it when editing
+cancel button when editing doesn't work, 
+submit button works when editing, but doesn't update within the client until we refresh
+icon is lost when you edit without applying a new icon                 // goals.js:toggleEditing()
+cancel button doesn't work for adding new goal     -- FIXED
+

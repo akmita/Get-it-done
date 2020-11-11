@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require("body-parser");
+const Joi = require('joi');
 const app = express();
-app.use(bodyParser.json());
+app.use(bodyParser.json());              // middleware, so we can recieve JSON into our put, post... functions
 const path = require('path');
 const db = require("./db");
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;   // global object "process" has field that stores environment varaible
 
 
 // MONGODB DATABASE CONNECTION
@@ -70,7 +71,7 @@ app.put("/api/:id", (req, res)=>{
     console.log("body: ");
     console.log(req.body);    
     elementID = req.params.id;
-
+    
     db.getDB().collection("goals").findOneAndUpdate(
         { _id : db.getPrimaryKey(elementID)},
         { $set : req.body },
@@ -82,6 +83,29 @@ app.put("/api/:id", (req, res)=>{
                 res.json(result);
             }
         }
+    )
+})
+
+// will post new goal to database
+app.post('/api/addGoal', (req, res)=>{
+    const schema = Joi.object({                                // validation schema
+        name: Joi.string().min(1).required()
+    });
+    const result = schema.validate(req.body);      
+    if (result.error) {
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }   
+
+
+    db.getDB().collection("goals").insertOne(
+        req.body,
+        (err, result)=>{
+            if  (err) console.log(err);
+            else { 
+                res.json(result);
+            }
+        }    
     )
 })
 
