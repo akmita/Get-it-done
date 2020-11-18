@@ -302,6 +302,18 @@ function getParentEditTemplate(name, reason, color) {
 }
 
 
+function getChildEditTemplate(name, reason, color) {
+    `<div class="goal-1 elementForEdit" style="background:${color};">
+            <div class="iconContainer"> <i class="fas fa-adjust"></i> </div>               
+            <input type="text" class="goalTextBox" value="${name}" style="background: LightCoral;" id="001">
+            <button id="submitButton" style="background: ${color}"><i class="fas fa-check fa-2x"></i></button>
+            <button id="cancelButton" style="background: ${color}">Cancel</button> 
+        </div>
+    </div>`;
+}
+
+
+
 const renderGoal = (goal, ids) => {
    
     document.querySelector(".goalsContainer").innerHTML += getGoalParent(goal.name, goal.duration, goal.reason, goal.iconNum, ids, goal.milestones.length, goal.color);        // render main goal tab
